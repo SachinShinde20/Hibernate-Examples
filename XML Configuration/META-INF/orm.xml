@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Hibernate ORM mapping file using JPA XML format -->
-<!-- Maps a Java class (Student) to a database table and its columns -->
+<!-- XML-based ORM Mapping File -->
+<!-- Used to map Java classes (entities) to database tables and columns -->
 
 <entity-mappings
     version="2.2"
@@ -10,75 +10,39 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
                         http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd">
 
-    <!-- Maps the Java class to a database table -->
-    <entity class="com.HibernetExamples.Student" access="PROPERTY">
-        <!-- access="PROPERTY" tells Hibernate to use getter/setter methods instead of direct field access -->
+    <!-- Declare an entity class to be mapped -->
+    <entity class="com.main.Employee" access="PROPERTY">
+        <!-- Maps this Java class to the table "Employee" -->
+        <table name="Employee"/>
 
-        <!-- Optional: Custom table name in the database -->
-        <table name="Student_Records"/>
-
+        <!-- Field-to-column mapping section -->
         <attributes>
-            <!-- Primary key mapping -->
-            <id name="id">
-                <!-- Maps the property "id" to the column "Student_id" -->
-                <column name="Student_id"/>
+
+            <!-- ID field (Primary Key) -->
+            <id name="id"> <!-- Java property name: 'id' -->
+                <column name="Employee_id"/> <!-- DB column name: 'Employee_id' -->
             </id>
 
-            <!-- Other fields/properties mapping -->
-
-            <basic name="name">
-                <column name="Student_name"/>
+            <!-- Basic field mapping: name -->
+            <basic name="name"> <!-- Java property name: 'name' -->
+                <column name="Employee_Name"/> <!-- DB column name -->
             </basic>
 
-            <basic name="course">
-                <column name="Student_course"/>
+            <!-- Basic field mapping: city -->
+            <basic name="city"> <!-- Java property name: 'city' -->
+                <column name="Employee_City"/>
             </basic>
 
-            <basic name="city">
-                <column name="Student_city"/>
+            <!-- Basic field mapping: post -->
+            <basic name="post"> <!-- Java property name: 'post' -->
+                <column name="Employee_Post"/>
             </basic>
 
-            <basic name="mobileNo">
-                <column name="Student_mobile_Number"/>
+            <!-- Basic field mapping: mobileNo -->
+            <basic name="mobileNo"> <!-- Java property name: 'mobileNo' -->
+                <column name="E_MobileNumber"/>
             </basic>
+
         </attributes>
     </entity>
 </entity-mappings>
-
-
-
-<!-- 
-🌟 Summary Notes on XML Mapping:
-
-✔ <entity> → Maps Java class to a DB table
-✔ class → Fully qualified class name (with package)
-✔ access="PROPERTY" → Hibernate uses getter/setter methods instead of fields
-
-✔ <table name="..."/> → Optional, only needed if table name ≠ class name
-
-✔ <attributes> → Contains all property mappings (fields)
-
-✔ <id> → Maps the primary key property
-✔ <basic> → Maps a simple (non-primary) property
-✔ <column name="..."/> → Maps Java property to DB column
-     ➤ Optional if property name = column name
-     ➤ Add constraints like:
-         • nullable="false" → NOT NULL
-         • unique="true" → UNIQUE
-         • length="100" → VARCHAR(100)
-         • column-definition="varchar(50) default 'Unknown'" → default value
-
-✅ Important:
-✔ If your table name = class name and column names = property names,
-   then <table>, <basic>, and <column> tags are OPTIONAL!
-   Hibernate will auto-map them by convention.
-
-Example:
-   public class Student {
-       private int id;         // maps to column: id
-       private String name;    // maps to column: name
-   }
-
-✔ You still need <id> and <basic>, unless you use annotations.
-
- -->

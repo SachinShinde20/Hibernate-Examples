@@ -1,47 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Main configuration file for JPA -->
-<!-- This file is used to define the persistence unit, database connection, provider, and Hibernate settings -->
-
-<persistence
-    version="2.2"
+<persistence version="2.2"
     xmlns="http://xmlns.jcp.org/xml/ns/persistence"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
-                        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 
-    <!-- Define the persistence unit -->
-    <persistence-unit name="config"> 
-        <!-- The name "config" is used in your Java code in Persistence.createEntityManagerFactory("config") -->
-
-        <!-- Hibernate JPA provider implementation -->
+    <persistence-unit name="config">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
-        <!-- Mapping file to be used (XML-based entity mapping) -->
         <mapping-file>META-INF/orm.xml</mapping-file>
 
-        <!-- Database connection and Hibernate properties -->
         <properties>
-            <!-- Database Driver, Url, Username and Password-->
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>  		
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hibernetexamples"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="@Pass123"/>
 
-			<!-- This property tells Hibernate which SQL dialect to use based on the database you're using.
-			Different databases (like MySQL, PostgreSQL, Oracle) have slight variations in SQL syntax. 
-			Hibernate uses the dialect to generate optimized SQL for the chosen database. -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-
-            <!-- Schema (Table) generation strategy -->
-            <!-- update: creates or updates table structure automatically -->
-            <!-- create: drops and recreates table every time (BE CAREFUL!) -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/> 
-
-            <!-- Show SQL statements in the console -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-
         </properties>
     </persistence-unit>
-
 </persistence>
