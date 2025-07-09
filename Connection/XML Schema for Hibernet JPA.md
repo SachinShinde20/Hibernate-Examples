@@ -174,7 +174,7 @@ For real-world applications:
 
 For real-world applications:
 
-- JPA specification strictly defines that the file must be found at META-INF/persistence.xml in the classpath.
+- JPA specification strictly defines that the file must be found at META-INF/... .xml in the classpath.
 - If not found, you get errors like:
 - Could not find any META-INF/persistence.xml file in the classpath
   No Persistence provider for EntityManager named config
