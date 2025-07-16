@@ -61,6 +61,27 @@ int result = nativeQuery.executeUpdate(); // Executes insert, update, delete
    - `List<Object[]>` if partial columns selected
    - `List<Entity>` if mapped class provided and full columns selected
 
+5. **`getSingleResult()` — Used for Aggregate & Single-Value Queries**
+   When your query returns only **one row and one column**, like:
+
+- `SELECT MAX(price)`
+- `SELECT COUNT(*)`
+- `SELECT name FROM Product WHERE id = 101`
+  You should use:
+
+```java
+Object result = eManager.createNativeQuery("SELECT COUNT(*) FROM Product").getSingleResult();
+System.out.println("Total Products: " + result);
+```
+
+- ✅ Returns: `Object` (use casting if needed)
+- ❗Throws: `NoResultException` if nothing found, `NonUniqueResultException` if multiple rows
+
+Use it when:
+
+- You expect only one result
+- You are performing aggregate operations (SUM, AVG, MIN, MAX, COUNT)
+
 ---
 
 ## 🛠 CRUD Example Using Native SQL
@@ -221,3 +242,99 @@ for (Product product : resultList) {
 - `getResultList()` fetches query results (object arrays or entity list).
 - Use `Product.class` only when all entity fields are selected.
 - `persist()` is JPA-managed; `createNativeQuery()` is native SQL-based.
+
+---
+
+---
+
+# ✅ Placeholders vs Named Parameters
+
+#### 🔹 Positional Placeholders `?`
+
+Most common in native SQL:
+
+```java
+"SELECT * FROM Product WHERE price > ?"
+q.setParameter(1, 100);
+```
+
+#### 🔹 Named Parameters (Recommended for JPQL)
+
+Cleaner and self-documenting (only in JPQL):
+
+```java
+"SELECT p FROM Product p WHERE p.price > :price"
+q.setParameter("price", 100);
+```
+
+- ✅ Better readability
+- ❌ Not supported in Native SQL
+
+---
+
+---
+
+# ✅ Reusable Queries: `@NamedQuery` & `@NamedNativeQuery`
+
+#### 🔸 `@NamedQuery` (JPQL-Based)
+
+```java
+@NamedQuery(
+    name = "Product.findExpensive",
+    query = "SELECT p FROM Product p WHERE p.price > :price"
+)
+```
+
+- 🔸 JPQL syntax
+- ✅ Works with entities
+
+Usage:
+
+```java
+Query q = eManager.createNamedQuery("Product.findExpensive");
+q.setParameter("price", 100);
+List<Product> list = q.getResultList();
+```
+
+---
+
+#### 🔸 `@NamedNativeQuery` (SQL-Based)
+
+```java
+@NamedNativeQuery(
+    name = "Product.nativeFindExpensive",
+    query = "SELECT * FROM Product WHERE price > ?",
+    resultClass = Product.class
+)
+```
+
+- 🔸 Native SQL syntax
+- ✅ Requires `resultClass` to map data to entity
+
+Usage:
+
+```java
+Query q = eManager.createNamedQuery("Product.nativeFindExpensive");
+q.setParameter(1, 100);
+List<Product> list = q.getResultList();
+```
+
+---
+
+### ✅ Difference Between `@NamedQuery` and `@NamedNativeQuery`
+
+| Feature            | `@NamedQuery`              | `@NamedNativeQuery`         |
+| ------------------ | -------------------------- | --------------------------- |
+| Query Type         | JPQL                       | SQL                         |
+| Mapping Entity     | Yes                        | Yes (with `resultClass`)    |
+| Placeholder Style  | Named Parameters (`:name`) | Positional Parameters (`?`) |
+| Syntax Flexibility | Limited to JPQL            | Supports full SQL features  |
+
+---
+
+Let me know if you’d like:
+
+- A working example with both annotations
+- More topics like DTO projection, stored procedures, pagination etc.
+
+You're doing great with your notes!
