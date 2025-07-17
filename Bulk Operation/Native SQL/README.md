@@ -331,10 +331,3 @@ List<Product> list = q.getResultList();
 | Syntax Flexibility | Limited to JPQL            | Supports full SQL features  |
 
 ---
-
-Let me know if you’d like:
-
-- A working example with both annotations
-- More topics like DTO projection, stored procedures, pagination etc.
-
-You're doing great with your notes!
